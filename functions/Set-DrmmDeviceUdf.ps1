@@ -27,13 +27,12 @@ function Set-DrmmDeviceUdf {
 	#>
 
 	[CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Medium')]
-	[OutputType([psobject])]
 	param(
 		[Parameter(Mandatory = $true, HelpMessage = "Provide device uid which will be used to set UDF(s)")]
 		[ValidateNotNullOrEmpty()]
 		[string]$DeviceUid,
 
-		[Parameter(Mandatory = $false, HelpMessage = "Provide UDF key/value pairs, for example @{ udf1 = 'Value'; udf300 = '' }")]
+		[Parameter(Mandatory = $true, HelpMessage = "Provide UDF key/value pairs, for example @{ udf1 = 'Value'; udf300 = '' }")]
 		[ValidateNotNull()]
 		[object]$UdfData
 	)
@@ -84,7 +83,7 @@ function Set-DrmmDeviceUdf {
 				return New-ApiRequest -apiMethod $ApiMethod -apiRequest "/v2/device/$DeviceUid/udf" -apiRequestBody $Body
 			}
 		} catch {
-			Write-Error $_
+			throw $_
 		}
 	}
 
